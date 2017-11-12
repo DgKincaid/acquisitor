@@ -14,19 +14,6 @@ function aquire(){
             var $ = cheerio.load(html);
             var json = { title: '' };
 
-            if(url.includes('readlightnovel')){
-
-                $('.block-header').filter(function(i, el){
-                    var data = $(this);
-                    
-                    console.log(i);
-
-                    json.title = data.children().first().text();
-
-                    console.log(json);
-                })
-            }
-            else {
                 $('.b-story-header').filter(function(){
                     var data = $(this);
     
@@ -39,7 +26,6 @@ function aquire(){
     
                     saveToFile(data.children().first().text())
                 })
-            }
 
             console.log(json);
         }
