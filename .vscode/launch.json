@@ -21,7 +21,7 @@
             "name": "Launch Program",
             "program": "${workspaceFolder}\\main.js",
             "args": [
-                "https://www.readlightnovel.org/against-the-gods/chapter-1"
+                
             ]
         }
     ]
