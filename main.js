@@ -14,18 +14,34 @@ function aquire(){
             var $ = cheerio.load(html);
             var json = { title: '' };
 
-            $('.b-story-header').filter(function(){
-                var data = $(this);
+            if(url.includes('readlightnovel')){
 
-                json.title = data.children().first().text();
-            })
+                $('.block-header').filter(function(i, el){
+                    var data = $(this);
+                    
+                    console.log(i);
 
-            $('.b-story-body-x').filter(function(){
-                console.log('body');
-                var data = $(this);
+                    json.title = data.children().first().text();
 
-                saveToFile(data.children().first().text())
-            })
+                    console.log(json);
+                })
+            }
+            else {
+                $('.b-story-header').filter(function(){
+                    var data = $(this);
+    
+                    json.title = data.children().first().text();
+                })
+    
+                $('.b-story-body-x').filter(function(){
+                    console.log('body');
+                    var data = $(this);
+    
+                    saveToFile(data.children().first().text())
+                })
+            }
+
+            console.log(json);
         }
         else{
             console.log('Error: ' + error);
