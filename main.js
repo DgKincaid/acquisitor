@@ -31,7 +31,10 @@ storyEmitter.on('body', (body) => {
     console.log('body: ' + 'body');
 })
 
-storyEmitter.on('')
+storyEmitter.on('', () => {
+
+})
+
 function aquire(page) {
     let url = baseUrl + '?page=' + page;
 
