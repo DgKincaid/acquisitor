@@ -3,36 +3,52 @@ var cheerio = require('cheerio');
 var fs = require('fs');
 var request = require('request');
 
+const StorySchema = require('./story');
 const EventEmitter = require('events');
 
 var app = express();
 
 let baseUrl = process.argv[2];
+let calls = 0;
 
 class StoryEmitter extends EventEmitter {};
 
 const storyEmitter = new StoryEmitter();
 
-storyEmitter.on('title', (data) => {
-    console.log('Title: ' + data);
+let Story = StorySchema;
+
+storyEmitter.on('title', (title) => {
+    Story.title = title;
 })
 
 storyEmitter.on('author', (author) => {
-    console.log('Author: ' + author);
+    Story.author = author;
 })
 
 storyEmitter.on('page', (page) => {
-    console.log('Page: ' + page);
+    Story.pages = page;
 
-    buildUrls(page);
+    Story.body = fillArray(page);
+
+    storyEmitter.emit('story', buildUrls(page));
 })
 
-storyEmitter.on('body', (body) => {
-    console.log('body: ' + 'body');
+storyEmitter.on('body', (body, number) => {
+
+    Story.body[number] = body;
+
+    if(calls >= Story.pages-1){
+        saveToFile(Story.title, buildStory(Story.body))
+    }
+
+    calls++;
 })
 
-storyEmitter.on('', () => {
-
+storyEmitter.on('story', (urlList) => {
+    
+    for(var i = 0; i < urlList.length; i++){
+        getBody(urlList[i], i);
+    }
 })
 
 function aquire(page) {
@@ -91,7 +107,7 @@ function getHeader(url){
     })
 }
 
-function getBody(url){
+function getBody(url, page){
     request(url, function(error, response, html){
         if(!error){
             var $ = cheerio.load(html);
@@ -99,13 +115,23 @@ function getBody(url){
             $('.b-story-body-x').filter(function(){
                 var data = $(this);
 
-                storyEmitter.emit('body', data.children().first().text());
+                storyEmitter.emit('body', data.children().first().text(), page);
             })
         }
         else {
             console.log('Error: ' + error);
         }
     })
+}
+
+function fillArray(size){
+    var newArray = [];
+
+    for(var i = 0; i < size; i++){
+        newArray.push('');
+    }
+
+    return newArray;
 }
 
 function buildUrls(numberOfPages){
@@ -118,8 +144,18 @@ function buildUrls(numberOfPages){
     return urls;
 }
 
-function saveToFile(text){
-    fs.writeFile("/tmp/test.txt", text, function(err) {
+function buildStory(body) {
+    var bodyString = '';
+
+    body.forEach(data => {
+        bodyString += data;
+    });
+
+    return bodyString;
+}
+
+function saveToFile(title, text){
+    fs.writeFile("/tmp/" + title + ".txt", text, function(err) {
         if(err) {
             return console.log(err);
         }
@@ -129,7 +165,5 @@ function saveToFile(text){
 }
 
 if(baseUrl) {
-    console.log(baseUrl);
-
     getHeader(baseUrl);
 }
