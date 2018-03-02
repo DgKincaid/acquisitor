@@ -14,13 +14,14 @@ class SaveService{
 
     saveStoryToTextFile(story){
 
-        let name = story.author + ' - ' + story.title + '.txt';
+        let name = story.author + '-' + story.title + '.txt';
         let storyString = story.title + '\r\n' + story.author + '\r\n' + story.body.map((page) =>{
-            return page.content;
+            return page.page + page.content;
         }).join();
 
-        console.log(story);
-        writeFile('C:/Users/Hello/Documents/Story/' + name, storyString)
+       // console.log(storyString);
+
+        writeFile('C:/tmp/' + name, storyString)
             .then(() => {
                 console.log('save successful');
             })
@@ -29,7 +30,7 @@ class SaveService{
     saveStoryToHTMLFile(page, html){
         //let name = story.author + ' - ' + story.title + '.html';
 
-        writeFile('C:/Users/Hello/Documents/Story/' + page + '-test.html', html)
+        writeFile('C:/tmp/' + page + '-test.html', html)
             .then(() => {
                 console.log('save successful');
             })

@@ -26,8 +26,7 @@ class AcquireService{
                 classList.forEach(element => {
                     $(element).filter(function(){
                         let data = $(this);
-
-                        newPage(data.html()).appendTo('#content');
+                        newPage('<div class="' + element.replace('.', '') + '">' + data.html() + '</div>').appendTo('#content');
                     })
                 });
 
@@ -37,8 +36,6 @@ class AcquireService{
                 console.log('Error: ' + err);
             })
         })
-        
-       
     }
 }
 

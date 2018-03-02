@@ -16,27 +16,32 @@ class LiteController {
     populateStory(page){
         let $ = cheerio.load(page);
 
-        $('#content').filter((i, el) => {
+        $('.b-story-header').filter((i, el) => {
             let data = $(el);
-
+            
             this.story.title = data.children().first().text();
-            this.story.body.push({ page: 1, content: data.children().last().prev().text()});
         })
 
+        $('.b-story-body-x').filter((i, el) => {
+            let data = $(el);
+
+            this.story.body.push({ page: 1, content: data.children().first().text()});
+        })
+        
         $('.b-story-user-y').filter((i, el)=>{
             let data = $(el);
 
             this.story.author = data.text();
         })
+
         $('.b-pager-caption-t').filter((i, el) => {
             let data = $(el);
             this.story.pages = data.text().replace(' Pages:', '');
         })
+        //SaveService.saveStoryToHTMLFile('', page);
     }
 
     populateBody(url, pageNumber){
-        console.log(url);
-
         let classes = [
             '.b-story-body-x'
         ];
@@ -44,11 +49,12 @@ class LiteController {
         AcquireService.getStoryHtml(url, classes).then((page) =>{
             let $ = cheerio.load(page);
 
-            $('#content').filter((i, el) => {
+            $('.b-story-body-x').filter((i, el) => {
                 let data = $(el);
                 this.story.body.push({ page: pageNumber, content: data.children().first().text()});
+                console.log(this.story.body);
             })
-            console.log('Test');
+            //SaveService.saveStoryToHTMLFile(pageNumber, page);
         });
     }
 
