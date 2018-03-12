@@ -15,11 +15,14 @@ class SaveService{
     saveStoryToTextFile(story){
 
         let name = story.author + '-' + story.title + '.txt';
-        let storyString = story.title + '\r\n' + story.author + '\r\n' + story.body.map((page) =>{
-            return page.page + page.content;
-        }).join();
+        let content = story.body.filter(() =>{
 
-       // console.log(storyString);
+        })
+        let storyString = story.title + '\r\n' + story.author + '\r\n' + story.body.sort((a, b) =>{
+            return a.page - b.page;
+        }).map((page) =>{
+            return page.content + '\r\nPage: ' + page.page + '\r\n';
+        }).join();
 
         writeFile('C:/tmp/' + name, storyString)
             .then(() => {

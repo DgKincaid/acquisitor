@@ -46,13 +46,12 @@ class LiteController {
             '.b-story-body-x'
         ];
 
-        AcquireService.getStoryHtml(url, classes).then((page) =>{
+        return AcquireService.getStoryHtml(url, classes).then((page) =>{
             let $ = cheerio.load(page);
 
             $('.b-story-body-x').filter((i, el) => {
                 let data = $(el);
                 this.story.body.push({ page: pageNumber, content: data.children().first().text()});
-                console.log(this.story.body);
             })
             //SaveService.saveStoryToHTMLFile(pageNumber, page);
         });
@@ -60,21 +59,24 @@ class LiteController {
 
     getStory(url){
         console.log('Lite Get Story');
+        let temp = [];
+
         let classes = [
             '.b-story-header',
             '.b-story-body-x',
             '.b-pager-pages'
         ];
 
-        AcquireService.getStoryHtml(url, classes).then((data) =>{
+        AcquireService.getStoryHtml(url, classes).then((data) => {
             this.populateStory(data);
 
-        }).then(() =>{
             for(let i = 2; i <= this.story.pages; i++){
                 let newUrl = url + '?page=' + i;
 
-                this.populateBody(newUrl, i);
+                temp.push(this.populateBody(newUrl, i));
             }
+
+            return Promise.all(temp);
         }).then(() =>{
             SaveService.saveStoryToTextFile(this.story);
         });
