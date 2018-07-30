@@ -58,7 +58,6 @@ class LiteController {
     }
 
     getStory(url){
-        console.log('Lite Get Story');
         let temp = [];
 
         let classes = [

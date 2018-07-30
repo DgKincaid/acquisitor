@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build:live",
-    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts"
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./main.ts"
   },
   "repository": {
     "type": "git",
@@ -20,12 +20,14 @@
   "homepage": "https://github.com/DgKincaid/acquisitor#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "express": "^4.16.2",
+    "express": "^4.16.3",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"
   },
   "devDependencies": {
+    "@types/cheerio": "^0.22.8",
     "@types/node": "^9.4.6",
+    "@types/request-promise": "^4.1.42",
     "nodemon": "^1.17.1",
     "ts-node": "^5.0.1",
     "typescript": "^2.7.2"

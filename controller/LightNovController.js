@@ -22,4 +22,4 @@ class LightNovController {
     }
 }
 
-module.exports = LightNovController;
+// module.exports = LightNovController;
