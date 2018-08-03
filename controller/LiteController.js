@@ -1,7 +1,6 @@
 'use strict';
 
 const cheerio = require('cheerio');
-const fs = require('fs');
 
 const AcquireService = require('../index').Service.AcquireService;
 const SaveService = require('../index').Service.SaveService;

@@ -30,6 +30,13 @@ class SaveService{
             })
     }
 
+    saveblobtofile(title, blob) {
+        writeFile('C:/tmp/' + title + '.txt', blob)
+            .then(() => {
+                console.log('save successful');
+            })
+    }
+
     saveStoryToHTMLFile(page, html){
         //let name = story.author + ' - ' + story.title + '.html';
 
